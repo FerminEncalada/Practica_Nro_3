@@ -1,0 +1,44 @@
+{% extends 'template.html' %}
+{% block content %}
+
+<div class="page-title" data-aos="fade">
+    <div class="heading">
+      <div class="container">
+        <div class="row d-flex justify-content-center text-center">
+          <div class="col-lg-8">
+            <h1>Guardar Inversionista</h1>
+            <p class="mb-0">Formulario de Registro</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav class="breadcrumbs">
+      <div class="container">
+        <ol>
+          <li><a href="index.html">Inicio</a></li>
+          <li class="current">Inversionistas</li>
+        </ol>
+      </div>
+    </nav>
+</div><!-- End Page Title -->
+
+<div class="container mt-5">
+    <h2>Formulario para Guardar Inversionista</h2>
+    <form class="row g-3" method="post" action="/inversionista/crear">
+        <div class="form-group">
+            <label for="nombres">Nombre del Inversionista</label>
+            <input type="text" class="form-control" name="nombres" required>
+        </div>
+        <div class="form-group">
+            <label for="dni">DNI</label>
+            <input type="text" class="form-control" name="dni" required>
+        </div>
+        <div class="form-group">
+            <label for="inversion">Inversión</label>
+            <input type="number" class="form-control" name="inversion" step="0.01" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar Inversionista</button>
+    </form>
+</div>
+
+{% endblock %}

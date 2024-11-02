@@ -1,0 +1,60 @@
+{% extends 'template.html' %}
+{% block content %}
+   <!-- Page Title -->
+<div class="page-title" data-aos="fade">
+    <div class="heading">
+      <div class="container">
+        <div class="row d-flex justify-content-center text-center">
+          <div class="col-lg-8">
+            <h1>Inversionistas</h1>
+            <p class="mb-0">Gestión de Inversionistas</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav class="breadcrumbs">
+      <div class="container">
+        <ol>
+          <li><a href="index.html">Inicio</a></li>
+          <li class="current">Inversionistas</li>
+        </ol>
+      </div>
+    </nav>
+</div><!-- End Page Title -->
+
+<!-- Inversionistas Section -->
+<section id="inversionistas" class="inversionistas section">
+    <div class="container">
+        <div class="container mt-5">
+            <h2>Listado de Inversionistas</h2>
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Nombre</th>
+                        <th>DNI</th>
+                        <th>Inversión</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in lista %}
+                    <tr>
+                        <td>{{ item.idInversionista }}</td>
+                        <td>{{ item.nombres }}</td>
+                        <td>{{ item.dni }}</td>
+                        <td>{{ item.inversion }}</td>
+                        <td>
+                            <div class="btn-group-custom">
+                                <button type="button" class="btn btn-danger btn-sm">Eliminar</button>
+                                <button type="button" class="btn btn-primary btn-sm">Editar</button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section><!-- /Inversionistas Section -->
+{% endblock %}
