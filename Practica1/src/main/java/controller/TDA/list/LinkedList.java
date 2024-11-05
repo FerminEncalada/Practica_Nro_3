@@ -266,5 +266,37 @@ public class LinkedList<E> {
         }
         return this;
     }
-
+    
+    public LinkedList<E> filter(Object data) throws ListEmptyException {
+        if (isEmpty()) {
+            throw new ListEmptyException("Error, la lista está vacía");
+        }
+        
+        E[] array = toArray();
+        LinkedList<E> aux = new LinkedList<>();
+        
+        for (E element : array) {
+            try {
+                java.lang.reflect.Field pertenenciaField = element.getClass().getDeclaredField("pertenencia");
+                pertenenciaField.setAccessible(true);
+                
+                Object pertenenciaValue = pertenenciaField.get(element);
+                System.out.println("Comparando pertenencia: " + pertenenciaValue + " con: " + data); // Debug
+                
+                if (pertenenciaValue != null && pertenenciaValue.equals(data)) {
+                    aux.add(element);
+                }
+            } catch (NoSuchFieldException e) {
+                System.out.println("Campo 'pertenencia' no encontrado en la clase " + element.getClass().getName());
+                continue;
+            } catch (IllegalAccessException e) {
+                System.out.println("Error de acceso al campo 'pertenencia' en la clase " + element.getClass().getName());
+                continue;
+            }
+        }
+        
+        return aux;
+    }
+    
+    
 }

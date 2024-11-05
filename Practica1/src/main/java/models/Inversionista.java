@@ -1,26 +1,26 @@
 package models;
 
 public class Inversionista {
-    private int idInversionista;
+    private Integer idInversionista;
     private String nombres;
     private String dni;
-    private Float inversion;
+    private String pertenencia;
 
     public Inversionista() {
     }
 
-    public Inversionista(int idInversionista, String nombres, String dni, Float inversion) {
+    public Inversionista(Integer idInversionista, String nombres, String dni, String pertenencia) {
         this.idInversionista = idInversionista;
         this.nombres = nombres;
         this.dni = dni;
-        this.inversion = inversion;
+        this.pertenencia = pertenencia;
     }
 
-    public int getIdInversionista() {
+    public Integer getIdInversionista() {
         return idInversionista;
     }
 
-    public void setIdInversionista(int idInversionista) {
+    public void setIdInversionista(Integer idInversionista) {
         this.idInversionista = idInversionista;
     }
 
@@ -40,12 +40,12 @@ public class Inversionista {
         this.dni = dni;
     }
 
-    public Float getInversion() {
-        return inversion;
+    public String getPertenencia() {
+        return pertenencia;
     }
 
-    public void setInversion(Float inversion) {
-        this.inversion = inversion;
+    public void setPertenencia(String pertenencia) {
+        this.pertenencia = pertenencia;
     }
 
 

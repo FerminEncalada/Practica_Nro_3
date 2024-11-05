@@ -1,0 +1,26 @@
+[
+  {
+    "idInversionista": 1,
+    "nombres": "fermin lopez",
+    "dni": "115648363",
+    "pertenencia": "PRJ2024S"
+  },
+  {
+    "idInversionista": 2,
+    "nombres": "Fernando Lopez",
+    "dni": "1156473432",
+    "pertenencia": "PRJ2024S"
+  },
+  {
+    "idInversionista": 3,
+    "nombres": "Joel Perez",
+    "dni": "1123453612",
+    "pertenencia": "PRJ2024S"
+  },
+  {
+    "idInversionista": 5,
+    "nombres": "Miguel Cabrera",
+    "dni": "1105467345",
+    "pertenencia": "PRJ2024S"
+  }
+]

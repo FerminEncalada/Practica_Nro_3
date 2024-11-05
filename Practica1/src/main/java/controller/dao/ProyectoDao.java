@@ -1,7 +1,7 @@
 package controller.dao;
 
 import controller.dao.implement.AdapterDao;
-import controller.  TDA.list.LinkedList;
+import controller.TDA.list.LinkedList;
 import models.Proyecto;
 
 public class ProyectoDao extends AdapterDao<Proyecto> {

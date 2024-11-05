@@ -1,36 +1,37 @@
 package models;
 
 public class Proyecto {
-    private int idProyecto;
+    private Integer idProyecto;
     private String nombreProyecto;
     private Float inversion;
-    private int tiempoVida;
+    private Integer tiempoVida;
     private String fechaInicio;
     private String fechaFin;
-    private Float ElectricidadGenerada;
+    private Float electricidadGenerada;
     private Float costoTotal;
-
+    private String codigodelproyecto;
     public Proyecto(){
 
     }
     
-    public Proyecto(int idProyecto, String nombreProyecto, Float inversion, int tiempoVida, String fechaInicio, String fechaFin, Float ElectricidadGenerada, Float costoTotal) {
+    public Proyecto(Integer idProyecto, String nombreProyecto, Float inversion, Integer tiempoVida, String fechaInicio, String fechaFin, Float electricidadGenerada, Float costoTotal, String codigodelproyecto) {
         this.idProyecto = idProyecto;
         this.nombreProyecto = nombreProyecto;
         this.inversion = inversion;
         this.tiempoVida = tiempoVida;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
-        this.ElectricidadGenerada = ElectricidadGenerada;
+        this.electricidadGenerada = electricidadGenerada;
         this.costoTotal = costoTotal;
+        this.codigodelproyecto = codigodelproyecto;
     }
 
 
-    public int getIdProyecto() {
+    public Integer getIdProyecto() {
         return idProyecto;
     }
 
-    public void setIdProyecto(int idProyecto) {
+    public void setIdProyecto(Integer idProyecto) {
         this.idProyecto = idProyecto;
     }
 
@@ -50,11 +51,11 @@ public class Proyecto {
         this.inversion = inversion;
     }
 
-    public int getTiempoVida() {
+    public Integer getTiempoVida() {
         return tiempoVida;
     }
 
-    public void setTiempoVida(int tiempoVida) {
+    public void setTiempoVida(Integer tiempoVida) {
         this.tiempoVida = tiempoVida;
     }
 
@@ -75,11 +76,11 @@ public class Proyecto {
     }
 
     public Float getElectricidadGenerada() {
-        return ElectricidadGenerada;
+        return electricidadGenerada;
     }
 
-    public void setElectricidadGenerada(Float ElectricidadGenerada) {
-        this.ElectricidadGenerada = ElectricidadGenerada;
+    public void setElectricidadGenerada(Float electricidadGenerada) {
+        this.electricidadGenerada = electricidadGenerada;
     }
 
     public Float getCostoTotal() {
@@ -88,6 +89,14 @@ public class Proyecto {
 
     public void setCostoTotal(Float costoTotal) {
         this.costoTotal = costoTotal;
+    }
+
+    public String getCodigodelproyecto() {
+        return codigodelproyecto;
+    }
+
+    public void setCodigodelproyecto(String codigodelproyecto) {
+        this.codigodelproyecto = codigodelproyecto;
     }
 
 }

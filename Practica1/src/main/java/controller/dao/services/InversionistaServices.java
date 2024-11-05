@@ -12,7 +12,11 @@ public class InversionistaServices {
     public Boolean save() throws Exception {
         return obj.save();
     }
-    
+
+    public Boolean update() throws Exception {
+        return obj.update();
+    }
+
     public LinkedList<Inversionista> listAll(){
         return obj.getListAll();
     }
@@ -21,7 +25,11 @@ public class InversionistaServices {
         return obj.getInversionista();
     }
 
-    public void setIdInversionista(Inversionista inversionista) {
+    public void setInversionista(Inversionista inversionista) {
         obj.setProyecto(inversionista);
+    }
+
+    public Inversionista get(Integer id) throws Exception {
+        return obj.get(id);
     }
 }

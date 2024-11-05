@@ -5,7 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.Scanner;
 import com.google.gson.Gson;
-import controller.TDA.list.LinkedList;
+import controller.TDA.list.LinkedList;;
 
 public class AdapterDao<T> implements InterfazDao<T> {
     private Class<T> clazz;
@@ -32,6 +32,8 @@ public class AdapterDao<T> implements InterfazDao<T> {
         return null;
     }
 
+
+//to_list
     public LinkedList<T> listAll() {
         LinkedList<T> list = new LinkedList<>();
         try {

@@ -36,4 +36,10 @@ public class InversionistaDao extends AdapterDao<Inversionista> {
         persist(getInversionista());
         return true;
     }
+
+    public Boolean update() throws Exception {
+        this.merge(getInversionista(), getInversionista().getIdInversionista() - 1);
+        this.listAll = listAll();
+        return true;
+    }
 }
