@@ -4,68 +4,73 @@
   <section id="projects" class="projects section">
     <div class="container">
       <div class="container mt-5">
+
         <!-- Controles para ordenar -->
-        <div class="mb-3">
+        <div class="mb-5 p-4 shadow-lg rounded bg-light">
+          <h3 class="text-center mb-4">Ordenar Proyectos</h3>
           <form id="form-ordenar">
-            <div class="row g-3 align-items-center">
-              <div class="col-auto">
-                <label for="metodo" class="col-form-label">Algoritmo:</label>
+            <div class="row g-3 justify-content-center align-items-center">
+              <div class="col-md-4">
+                <label for="metodo" class="form-label">Algoritmo:</label>
                 <select id="metodo" name="metodo" class="form-select">
                   <option value="metodo1">QuickSort</option>
                   <option value="metodo2">MergeSort</option>
                   <option value="metodo3">ShellSort</option>
                 </select>
               </div>
-              <div class="col-auto">
-                <label for="type_order" class="col-form-label">Orden:</label>
+              <div class="col-md-4">
+                <label for="type_order" class="form-label">Orden:</label>
                 <select id="type_order" name="type_order" class="form-select">
                   <option value="1">Ascendente</option>
                   <option value="2">Descendente</option>
                 </select>
               </div>
-              <div class="col-auto">
-                <label for="atributo" class="col-form-label">Atributo:</label>
+              <div class="col-md-4">
+                <label for="atributo" class="form-label">Atributo:</label>
                 <select id="atributo" name="atributo" class="form-select">
                   <option value="nombreproyecto">Nombre del proyecto</option>
                   <option value="inversion">Inversión</option>
                   <option value="codigodelproyecto">Código del proyecto</option>
                 </select>
               </div>
-              <div class="col-auto">
-                <button type="submit" class="btn btn-primary">Ordenar</button>
+              <div class="col-12 text-center mt-4">
+                <button type="submit" class="btn btn-primary px-5">Ordenar</button>
               </div>
             </div>
           </form>
         </div>
+
         <!-- Controles para buscar -->
-        <div class="mb-3">
+        <div class="mb-5 p-4 shadow-lg rounded bg-light">
+          <h3 class="text-center mb-4">Buscar Proyectos</h3>
           <form id="form-buscar">
-            <div class="row g-3 align-items-center">
-              <div class="col-auto">
-                <label for="busquedad" class="col-form-label">Tipo de Búsqueda:</label>
+            <div class="row g-3 justify-content-center align-items-center">
+              <div class="col-md-4">
+                <label for="busquedad" class="form-label">Tipo de Búsqueda:</label>
                 <select id="busquedad" name="busquedad" class="form-select">
                   <option value="busquedadbinaria">Binaria</option>
                   <option value="busquedadlineal">Lineal</option>
                 </select>
               </div>
-              <div class="col-auto">
-                <label for="criterio" class="col-form-label">Criterio:</label>
+              <div class="col-md-4">
+                <label for="criterio" class="form-label">Criterio:</label>
                 <select id="criterio" name="criterio" class="form-select">
                   <option value="nombreproyecto">Nombre</option>
                   <option value="inversion">Inversión</option>
-                  <option value="codigodelproyecto">Codigo proyecto</option>
+                  <option value="codigodelproyecto">Código del proyecto</option>
                 </select>
               </div>
-              <div class="col-auto">
-                <label for="valor" class="col-form-label">Valor:</label>
+              <div class="col-md-4">
+                <label for="valor" class="form-label">Valor:</label>
                 <input type="text" id="valor" name="valor" class="form-control">
               </div>
-              <div class="col-auto">
-                <button type="submit" class="btn btn-primary">Buscar</button>
+              <div class="col-12 text-center mt-4">
+                <button type="submit" class="btn btn-primary px-5">Buscar</button>
               </div>
             </div>
           </form>
         </div>
+
         <!-- Tabla de Proyectos -->
         <div class="container-fluid mt-5">
           <div class="row justify-content-center">
@@ -151,14 +156,21 @@
                     <td>${item.codigodelproyecto}</td>
                     <td>
                       <div class="btn-group">
-                        <a class="btn btn-primary btn-sm me-2" href="/proyecto/editar/${item.idProyecto}">Editar</a>
-                        <a class="btn btn-danger btn-sm me-2" href="/proyecto/eliminar/${item.idProyecto}">Eliminar</a>
-                        <a class="btn btn-success btn-sm" href="/inversionista/listas/${item.codigodelproyecto}">Ver Inversionista</a>
+                        <a class="btn btn-outline-danger btn-sm mx-1" href="/proyecto/eliminar/${item.idProyecto}">
+                          <i class="bi bi-trash"></i> Eliminar
+                        </a>
+                        <a class="btn btn-outline-primary btn-sm mx-1" href="/edicion/${item.idProyecto}">
+                          <i class="bi bi-pencil"></i> Editar
+                        </a>
+                        <a class="btn btn-outline-success btn-sm mx-1" href="/lista/inversionistas/${item.codigodelproyecto}">
+                          <i class="bi bi-person-plus"></i> Inversionista
+                        </a>
                       </div>
                     </td>
                   </tr>
                 `);
               });
+              attachEventListeners();
             } else {
               alert('No se encontraron resultados.');
             }
@@ -197,9 +209,15 @@
                     <td>${current.info.codigodelproyecto}</td>
                     <td>
                       <div class="btn-group">
-                        <a class="btn btn-primary btn-sm me-2" href="/proyecto/editar/${current.info.idProyecto}">Editar</a>
-                        <a class="btn btn-danger btn-sm me-2" href="/proyecto/eliminar/${current.info.idProyecto}">Eliminar</a>
-                        <a class="btn btn-success btn-sm" href="/inversionista/listas/${current.info.codigodelproyecto}">Ver Inversionista</a>
+                        <a class="btn btn-outline-danger btn-sm mx-1" href="/proyecto/eliminar/${current.info.idProyecto}">
+                          <i class="bi bi-trash"></i> Eliminar
+                        </a>
+                        <a class="btn btn-outline-primary btn-sm mx-1" href="/edicion/${current.info.idProyecto}">
+                          <i class="bi bi-pencil"></i> Editar
+                        </a>
+                        <a class="btn btn-outline-success btn-sm mx-1" href="/lista/inversionistas/${current.info.codigodelproyecto}">
+                          <i class="bi bi-person-plus"></i> Inversionista
+                        </a>
                       </div>
                     </td>
                   </tr>
@@ -207,14 +225,19 @@
                 current = current.next;
               }
             } else {
-              alert('No se encontraron proyectos con ese criterio.');
+              alert('No se encontraron resultados.');
             }
           },
           error: function (xhr) {
-            alert('Error al buscar proyectos: ' + xhr.responseText);
+            alert('Error al buscar los proyectos: ' + xhr.responseText);
           }
         });
       });
+
+      // Función para volver a añadir los eventos a los botones después de modificar la tabla
+      function attachEventListeners() {
+        // Aquí puedes volver a agregar cualquier funcionalidad que se necesite para los botones después de actualizar la tabla
+      }
     });
   </script>
 {% endblock %}
