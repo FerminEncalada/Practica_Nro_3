@@ -3,6 +3,7 @@ package controller.dao.services;
 import controller.dao.ProyectoDao;
 import controller.TDA.list.LinkedList;
 import models.Proyecto;
+import controller.TDA.list.ListEmptyException;
 public class ProyectoServices {
     private ProyectoDao obj;
     public ProyectoServices() {
@@ -33,6 +34,26 @@ public class ProyectoServices {
         return obj.get(id);
     }
 
+    public LinkedList<Proyecto> ordenarQuicksort(Integer type_order, String atributo) {
+        return obj.ordenarQuicksort(type_order, atributo);
+    }
+    public LinkedList<Proyecto> ordenarMergeSort(Integer type_order, String atributo) {
+        return obj.ordenarQuicksort(type_order, atributo);
+    }
+    public LinkedList<Proyecto> ordenarShellSort(Integer type_order, String atributo) {
+        return obj.ordenarQuicksort(type_order, atributo);
+    }
+
+    public LinkedList<Proyecto> ProyectosLineal(String criterio, String valor) throws ListEmptyException {
+        return obj.buscarBinario(criterio, valor);
+    }
+
+    public LinkedList<Proyecto> buscarProyectosBinario(String criterio, String valor) throws ListEmptyException {
+        return obj.buscarLineal(criterio, valor);
+    }
+
+
+    
 
 }
 

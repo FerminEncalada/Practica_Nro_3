@@ -2,6 +2,7 @@ from flask import Blueprint, abort, request, render_template, redirect
 import json
 import requests
 from flask import flash
+from flask import jsonify
 router = Blueprint('router', __name__)
 
 @router.route('/')
@@ -131,3 +132,30 @@ def guardarInver(codigodelproyecto):
     else:
         flash(str(dat["message"]), category='error')
         return redirect('/lista/inversionistas/'+codigodelproyecto)
+    
+
+
+@router.route('/buscarlosproyectos/<busquedad>/<criterio>/<valor>')
+def buscarp(busquedad,criterio,valor):
+    url = 'http://localhost:8099/api/proyectos/metodosdebusquedad/' + busquedad + "/" + criterio + "/" + valor 
+    r = requests.get(url)
+
+    if r.status_code == 200:
+        data2= r.json()
+        return jsonify(data2)
+    else:
+        return jsonify({"messge": "Error al buscar los proyectos"}), 400
+
+
+@router.route('/ordenarlosproyectos/<metodo>/<type_order>/<atributo>')
+def ordenarp(metodo,type_order,atributo):
+    url = 'http://localhost:8099/api/proyectos/ordenarproyectos/' + metodo + "/" + type_order + "/" + atributo 
+    r = requests.get(url)
+
+    if r.status_code == 200:
+        data2= r.json()
+        return jsonify(data2)
+    else:
+        return jsonify({"messge": "Error al buscar los proyectos"}), 400
+
+    

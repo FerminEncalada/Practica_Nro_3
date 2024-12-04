@@ -2,56 +2,219 @@
 {% block content %}
   <!-- Projects Section -->
   <section id="projects" class="projects section">
-    <div class="container-fluid mt-5">
-        <div class="row justify-content-center">
-            <div class="col-12 col-xl-10">
-                <h2 class="text-center mb-4">Lista de Proyectos</h2>
-                <table class="table table-striped table-bordered table-hover table-responsive-lg text-center shadow-lg rounded">
-                    <thead class="table-dark">
-                        <tr>
-                            <th class="align-middle">#</th>
-                            <th class="align-middle">Nombre del proyecto</th>
-                            <th class="align-middle">Inversión</th>
-                            <th class="align-middle">Tiempo de Vida</th>
-                            <th class="align-middle">Fecha de Inicio</th>
-                            <th class="align-middle">Fecha de Fin</th>
-                            <th class="align-middle">Generación de energía por día</th>
-                            <th class="align-middle">Costo Total</th>
-                            <th class="align-middle">Código del proyecto</th>
-                            <th class="align-middle">Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in lista %}
-                        <tr>
-                            <td class="align-middle">{{ item.idProyecto }}</td>
-                            <td class="align-middle">{{ item.nombreProyecto }}</td>
-                            <td class="align-middle">{{ item.inversion }}</td>
-                            <td class="align-middle">{{ item.tiempoVida }}</td>
-                            <td class="align-middle">{{ item.fechaInicio }}</td>
-                            <td class="align-middle">{{ item.fechaFin }}</td>
-                            <td class="align-middle">{{ item.electricidadGenerada }}</td>
-                            <td class="align-middle">{{ item.costoTotal }}</td>
-                            <td class="align-middle">{{ item.codigodelproyecto }}</td>
-                            <td class="align-middle">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-outline-danger btn-sm mx-1">
-                                        <i class="bi bi-trash"></i> Eliminar
-                                    </button>
-                                    <a class="btn btn-outline-primary btn-sm mx-1" href="/edicion/{{item.idProyecto}}">
-                                        <i class="bi bi-pencil"></i> Editar
-                                    </a>
-                                    <a class="btn btn-outline-success btn-sm mx-1" href="/lista/inversionistas/{{item.codigodelproyecto}}">
-                                        <i class="bi bi-person-plus"></i> Inversionista
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+    <div class="container">
+      <div class="container mt-5">
+        <!-- Controles para ordenar -->
+        <div class="mb-3">
+          <form id="form-ordenar">
+            <div class="row g-3 align-items-center">
+              <div class="col-auto">
+                <label for="metodo" class="col-form-label">Algoritmo:</label>
+                <select id="metodo" name="metodo" class="form-select">
+                  <option value="metodo1">QuickSort</option>
+                  <option value="metodo2">MergeSort</option>
+                  <option value="metodo3">ShellSort</option>
+                </select>
+              </div>
+              <div class="col-auto">
+                <label for="type_order" class="col-form-label">Orden:</label>
+                <select id="type_order" name="type_order" class="form-select">
+                  <option value="1">Ascendente</option>
+                  <option value="2">Descendente</option>
+                </select>
+              </div>
+              <div class="col-auto">
+                <label for="atributo" class="col-form-label">Atributo:</label>
+                <select id="atributo" name="atributo" class="form-select">
+                  <option value="nombreproyecto">Nombre del proyecto</option>
+                  <option value="inversion">Inversión</option>
+                  <option value="codigodelproyecto">Código del proyecto</option>
+                </select>
+              </div>
+              <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Ordenar</button>
+              </div>
             </div>
+          </form>
         </div>
+        <!-- Controles para buscar -->
+        <div class="mb-3">
+          <form id="form-buscar">
+            <div class="row g-3 align-items-center">
+              <div class="col-auto">
+                <label for="busquedad" class="col-form-label">Tipo de Búsqueda:</label>
+                <select id="busquedad" name="busquedad" class="form-select">
+                  <option value="busquedadbinaria">Binaria</option>
+                  <option value="busquedadlineal">Lineal</option>
+                </select>
+              </div>
+              <div class="col-auto">
+                <label for="criterio" class="col-form-label">Criterio:</label>
+                <select id="criterio" name="criterio" class="form-select">
+                  <option value="nombreproyecto">Nombre</option>
+                  <option value="inversion">Inversión</option>
+                  <option value="codigodelproyecto">Codigo proyecto</option>
+                </select>
+              </div>
+              <div class="col-auto">
+                <label for="valor" class="col-form-label">Valor:</label>
+                <input type="text" id="valor" name="valor" class="form-control">
+              </div>
+              <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Buscar</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        <!-- Tabla de Proyectos -->
+        <div class="container-fluid mt-5">
+          <div class="row justify-content-center">
+            <div class="col-12 col-xl-10">
+              <h2 class="text-center mb-4">Lista de Proyectos</h2>
+              <table id="tabla-proyectos" class="table table-striped table-bordered table-hover table-responsive-lg text-center shadow-lg rounded">
+                <thead class="table-dark">
+                  <tr>
+                    <th>Nombre del proyecto</th>
+                    <th>Inversión</th>
+                    <th>Tiempo de Vida</th>
+                    <th>Fecha de Inicio</th>
+                    <th>Fecha de Fin</th>
+                    <th>Generación de Energía por Día</th>
+                    <th>Costo Total</th>
+                    <th>Código del Proyecto</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for item in lista %}
+                  <tr>
+                    <td>{{ item.nombreProyecto }}</td>
+                    <td>{{ item.inversion }}</td>
+                    <td>{{ item.tiempoVida }}</td>
+                    <td>{{ item.fechaInicio }}</td>
+                    <td>{{ item.fechaFin }}</td>
+                    <td>{{ item.electricidadGenerada }}</td>
+                    <td>{{ item.costoTotal }}</td>
+                    <td>{{ item.codigodelproyecto }}</td>
+                    <td>
+                      <div class="btn-group">
+                        <a class="btn btn-outline-danger btn-sm mx-1" href="/proyecto/eliminar/{{ item.idProyecto }}">
+                          <i class="bi bi-trash"></i> Eliminar
+                        </a>
+                        <a class="btn btn-outline-primary btn-sm mx-1" href="/edicion/{{ item.idProyecto }}">
+                          <i class="bi bi-pencil"></i> Editar
+                        </a>
+                        <a class="btn btn-outline-success btn-sm mx-1" href="/lista/inversionistas/{{ item.codigodelproyecto }}">
+                          <i class="bi bi-person-plus"></i> Inversionista
+                        </a>
+                      </div>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      // Ordenar Proyectos
+      $('#form-ordenar').on('submit', function (e) {
+        e.preventDefault();
+        const metodo = $('#metodo').val();
+        const type_order = $('#type_order').val();
+        const atributo = $('#atributo').val();
+
+        $.ajax({
+          url: `/ordenarlosproyectos/${metodo}/${type_order}/${atributo}`,
+          method: 'GET',
+          success: function (response) {
+            if (response.data && Array.isArray(response.data)) {
+              const tbody = $('#tabla-proyectos tbody');
+              tbody.empty();
+              response.data.forEach((item) => {
+                tbody.append(`
+                  <tr>
+                    <td>${item.nombreProyecto}</td>
+                    <td>${item.inversion}</td>
+                    <td>${item.tiempoVida}</td>
+                    <td>${item.fechaInicio}</td>
+                    <td>${item.fechaFin}</td>
+                    <td>${item.electricidadGenerada}</td>
+                    <td>${item.costoTotal}</td>
+                    <td>${item.codigodelproyecto}</td>
+                    <td>
+                      <div class="btn-group">
+                        <a class="btn btn-primary btn-sm me-2" href="/proyecto/editar/${item.idProyecto}">Editar</a>
+                        <a class="btn btn-danger btn-sm me-2" href="/proyecto/eliminar/${item.idProyecto}">Eliminar</a>
+                        <a class="btn btn-success btn-sm" href="/inversionista/listas/${item.codigodelproyecto}">Ver Inversionista</a>
+                      </div>
+                    </td>
+                  </tr>
+                `);
+              });
+            } else {
+              alert('No se encontraron resultados.');
+            }
+          },
+          error: function (xhr) {
+            alert('Error al ordenar los proyectos: ' + xhr.responseText);
+          }
+        });
+      });
+
+      // Buscar Proyectos
+      $('#form-buscar').on('submit', function (e) {
+        e.preventDefault();
+        const busquedad = $('#busquedad').val();
+        const criterio = $('#criterio').val();
+        const valor = $('#valor').val();
+
+        $.ajax({
+          url: `/buscarlosproyectos/${busquedad}/${criterio}/${valor}`,
+          method: 'GET',
+          success: function (response) {
+            if (response.data) {
+              const tbody = $('#tabla-proyectos tbody');
+              tbody.empty();
+              let current = response.data.header;
+              while (current) {
+                tbody.append(`
+                  <tr>
+                    <td>${current.info.nombreProyecto}</td>
+                    <td>${current.info.inversion}</td>
+                    <td>${current.info.tiempoVida}</td>
+                    <td>${current.info.fechaInicio}</td>
+                    <td>${current.info.fechaFin}</td>
+                    <td>${current.info.electricidadGenerada}</td>
+                    <td>${current.info.costoTotal}</td>
+                    <td>${current.info.codigodelproyecto}</td>
+                    <td>
+                      <div class="btn-group">
+                        <a class="btn btn-primary btn-sm me-2" href="/proyecto/editar/${current.info.idProyecto}">Editar</a>
+                        <a class="btn btn-danger btn-sm me-2" href="/proyecto/eliminar/${current.info.idProyecto}">Eliminar</a>
+                        <a class="btn btn-success btn-sm" href="/inversionista/listas/${current.info.codigodelproyecto}">Ver Inversionista</a>
+                      </div>
+                    </td>
+                  </tr>
+                `);
+                current = current.next;
+              }
+            } else {
+              alert('No se encontraron proyectos con ese criterio.');
+            }
+          },
+          error: function (xhr) {
+            alert('Error al buscar proyectos: ' + xhr.responseText);
+          }
+        });
+      });
+    });
+  </script>
 {% endblock %}

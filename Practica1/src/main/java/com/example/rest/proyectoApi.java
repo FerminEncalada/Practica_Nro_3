@@ -10,8 +10,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-
+import controller.TDA.list.LinkedList;
 import controller.dao.services.ProyectoServices;
+import models.Proyecto;
 @Path("/proyectos")
 public class proyectoApi {
     @Path("/misproyectos")
@@ -109,4 +110,76 @@ public Response update(HashMap<String, Object> map) {
    
     
     }
+
+
+@Path("/ordenarproyectos/{metodo}/{type_order}/{atributo}")
+@GET
+@Produces(MediaType.APPLICATION_JSON)
+public Response ordenarProyectos(@PathParam("metodo") String metodo, @PathParam("type_order") Integer type_order, @PathParam("atributo") String atributo) {
+    HashMap<String, Object> map = new HashMap<>();
+    ProyectoServices ps = new ProyectoServices();
+    
+    try {
+        LinkedList<Proyecto> lista;
+
+        if("metodo1".equalsIgnoreCase(metodo)) {
+            lista = ps.ordenarQuicksort(type_order, atributo);
+        } else if("metodo2".equalsIgnoreCase(metodo)) {
+            lista = ps.ordenarMergeSort(type_order, atributo);
+        } else if("metodo3".equalsIgnoreCase(metodo)) {
+            lista = ps.ordenarShellSort(type_order, atributo);
+        } else {
+            map.put("msg", "ERROR");
+            map.put("data", "Algoritmo no válido: " + metodo);
+            return Response.status(Response.Status.BAD_REQUEST).entity(map).build();
+        }
+
+        map.put("msg", "Lista de proyectos ordenados");
+        map.put("data", lista.toArray());
+        return Response.ok(map).build();
+    } catch (Exception e) {
+        map.put("msg", "ERROR");
+        map.put("data", e.getMessage());
+        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(map).build();
+    }
+}
+
+
+@Path("/metodosdebusquedad/{busquedad}/{criterio}/{valor}")
+@GET
+@Produces(MediaType.APPLICATION_JSON)
+public Response buscarproyecto(@PathParam("busquedad") String busquedad ,@PathParam("criterio") String criterio,@PathParam("valor") String valor ) {
+    HashMap<String, Object> map = new HashMap<>();
+    ProyectoServices ps = new ProyectoServices();
+
+    try {
+        LinkedList<Proyecto> proyectobuscar;
+
+        if("busquedadbinaria".equalsIgnoreCase(busquedad)) {
+            proyectobuscar = ps.buscarProyectosBinario(criterio, valor);
+        } else if ("busquedadlineal".equalsIgnoreCase(busquedad)) {
+            proyectobuscar = ps.ProyectosLineal(criterio, valor);
+        } else {
+            map.put("msg", "ERROR");
+            map.put("data", "No es vaidad la busquedad ");
+            return Response.status(Response.Status.BAD_REQUEST).entity(map).build();
+        } 
+
+        if (proyectobuscar != null && !proyectobuscar.isEmpty()) {
+            map.put("msg", "Proyecto encontrado");
+            map.put("data", proyectobuscar);
+            return Response.ok(map).build();
+        } else {
+            map.put("msg", "Proyecto no encontrado");
+            return Response.status(Response.Status.NOT_FOUND).entity(map).build();
+        }
+        } catch(Exception e){
+            map.put("msg","ERROR");
+            map.put("data", e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(map).build();
+
+    }
+}
+
+
 }
