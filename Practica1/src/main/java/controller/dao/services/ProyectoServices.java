@@ -38,10 +38,10 @@ public class ProyectoServices {
         return obj.ordenarQuicksort(type_order, atributo);
     }
     public LinkedList<Proyecto> ordenarMergeSort(Integer type_order, String atributo) {
-        return obj.ordenarQuicksort(type_order, atributo);
+        return obj.ordenarMergeSort(type_order, atributo);
     }
     public LinkedList<Proyecto> ordenarShellSort(Integer type_order, String atributo) {
-        return obj.ordenarQuicksort(type_order, atributo);
+        return obj.ordenarShellSort(type_order, atributo);
     }
 
     public LinkedList<Proyecto> ProyectosLineal(String criterio, String valor) throws ListEmptyException {
@@ -51,9 +51,6 @@ public class ProyectoServices {
     public LinkedList<Proyecto> buscarProyectosBinario(String criterio, String valor) throws ListEmptyException {
         return obj.buscarLineal(criterio, valor);
     }
-
-
-    
 
 }
 
