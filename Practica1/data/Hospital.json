@@ -1,0 +1,82 @@
+[
+  {
+    "idHospital": 1,
+    "nombre": "Hospital Eugenio Espejo",
+    "direccion": "Av. Gran Colombia, Quito",
+    "capacidad": 1000,
+    "longitud": -78.481007,
+    "latitud": -0.205812
+  },
+  {
+    "idHospital": 2,
+    "nombre": "Hospital del IESS Quito Sur",
+    "direccion": "Av. Quitumbe Ñan, Quito",
+    "capacidad": 800,
+    "longitud": -78.554191,
+    "latitud": -0.292343
+  },
+  {
+    "idHospital": 3,
+    "nombre": "Hospital de Especialidades Guayaquil Dr. Abel Gilbert Pontón",
+    "direccion": "Av. Quito y Lizardo García, Guayaquil",
+    "capacidad": 1200,
+    "longitud": -79.897453,
+    "latitud": -2.186634
+  },
+  {
+    "idHospital": 4,
+    "nombre": "Hospital Pediátrico Baca Ortiz",
+    "direccion": "Av. Colón y Av. 10 de Agosto, Quito",
+    "capacidad": 500,
+    "longitud": -78.500029,
+    "latitud": -0.207813
+  },
+  {
+    "idHospital": 5,
+    "nombre": "Hospital Luis Vernaza",
+    "direccion": "Calle Julián Coronel, Guayaquil",
+    "capacidad": 1000,
+    "longitud": -79.891703,
+    "latitud": -2.191643
+  },
+  {
+    "idHospital": 6,
+    "nombre": "Hospital de los Valles",
+    "direccion": "Av. Interoceánica, Cumbayá",
+    "capacidad": 300,
+    "longitud": -78.421501,
+    "latitud": -0.195925
+  },
+  {
+    "idHospital": 7,
+    "nombre": "Hospital General Docente Ambato",
+    "direccion": "Av. Rodrigo Pachano, Ambato",
+    "capacidad": 700,
+    "longitud": -78.611479,
+    "latitud": -1.248832
+  },
+  {
+    "idHospital": 8,
+    "nombre": "Hospital Teodoro Maldonado Carbo",
+    "direccion": "Av. 25 de Julio, Guayaquil",
+    "capacidad": 1500,
+    "longitud": -79.879601,
+    "latitud": -2.224799
+  },
+  {
+    "idHospital": 9,
+    "nombre": "Hospital General de Latacunga",
+    "direccion": "Barrio San Felipe, Latacunga",
+    "capacidad": 600,
+    "longitud": -78.629744,
+    "latitud": -0.933611
+  },
+  {
+    "idHospital": 10,
+    "nombre": "Hospital General de Machala",
+    "direccion": "Av. Edgar Cordova Polo y Circunvalación Sur, Machala",
+    "capacidad": 750,
+    "longitud": -79.984731,
+    "latitud": -3.264024
+  }
+]

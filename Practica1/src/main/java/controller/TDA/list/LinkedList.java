@@ -1,5 +1,6 @@
 package controller.TDA.list;
 
+import controller.TDA.graph.Adyecencia;
 import controller.TDA.list.LinkedList;
 
 public class LinkedList<E> {
@@ -298,5 +299,23 @@ public class LinkedList<E> {
         return aux;
     }
     
+
+    public boolean exist(Object data) {
+        Node<E> node = header;
+        while (node != null) {
+            try {
+                java.lang.reflect.Field idProyectoField = node.getInfo().getClass().getDeclaredField("idProyecto");
+                idProyectoField.setAccessible(true);
+                if (idProyectoField.get(node.getInfo()).equals(data)) {
+                    System.out.println("Ya existe un nodo con este dato (_dni)");
+                    return true;
+                }
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                //igonralo si el campo existe
+            }
+            node = node.getNext();
+        }
+        return false;
+    }
     
 }
