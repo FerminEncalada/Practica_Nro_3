@@ -1,15 +1,15 @@
 package controller.dao;
 
-import javax.ws.rs.core.Link;
 
 import com.google.gson.JsonArray;
-
+import com.google.gson.JsonObject;
 import models.Hospital;
 import controller.dao.implement.AdapterDao;
 import controller.TDA.list.LinkedList;
 import controller.TDA.list.ListEmptyException;
 import controller.TDA.graph.GraphLabelNoDirect;
 import controller.TDA.graph.algoritmos.BellmanFord;
+import controller.TDA.graph.algoritmos.DFS;
 import controller.TDA.graph.algoritmos.Floyd;
 
 public class HospitalDao extends AdapterDao<Hospital> {
@@ -34,6 +34,7 @@ public class HospitalDao extends AdapterDao<Hospital> {
 
             Hospital[] hospital = list.toArray();
             for (int i = 0; i < hospital.length; i++) {
+                this.graph.labelsVertices(i + 1, hospital[i].getNombre());
                 vertexName.add(hospital[i].getNombre());
             }
             this.graph.drawGraph();
@@ -43,17 +44,41 @@ public class HospitalDao extends AdapterDao<Hospital> {
 
 
     public void saveGraph() throws Exception {
-        if (graph != null) {
             this.graph.saveGraphLabel(name);
+        
+    }
+
+    public JsonObject getGraphData() throws Exception {
+        if (graph == null) {
+            createGraph();
+        }
+    
+        if (graph.existsFile(name)) {
+            graph.cargarModelosDesdeDao();
+            graph.loadGraph(name);
+    
+            // Asegúrate de que el tipo de dato sea correcto
+            JsonObject graphData = graph.getVisGraphData(); // Aquí debe devolver el formato correcto
+            return graphData; // Se asume que graphData es un JsonObject que contiene datos correctos
+        } else {
+            throw new Exception("No existe el archivo");
         }
     }
 
 
     public JsonArray obtainWeights() throws Exception {
         if (graph == null) {
-            return this.graph.obtainWeights();
+            createGraph();
         }
-        return new JsonArray();
+
+        if (graph.existsFile(name)) {
+            graph.cargarModelosDesdeDao();
+            graph.loadGraph(name);
+            JsonArray graphData = graph.obtainWeights();
+            return graphData;
+        } else {
+            throw new Exception("No existe el archivo");
+        }
     }
 
     public GraphLabelNoDirect<String> obtenerGrafo() throws Exception {
@@ -71,6 +96,54 @@ public class HospitalDao extends AdapterDao<Hospital> {
                 return graph;
 
     }
+
+    public GraphLabelNoDirect<String> adyacencias() throws Exception {
+        if (graph == null) {
+            createGraph();
+        }
+
+        if (graph.existsFile(name)) {
+            graph.cargarModelosDesdeDao();
+            graph.loadGraphWithRandomEdges(name);
+        } else {
+            throw new Exception("No existe el archivo");
+        }
+        saveGraph();
+        System.out.println("Grafo con adyacencias creado" + graph);
+        return graph;
+
+    }
+
+    public String caminoCorto(int origen, int destino, int algoritmo) throws Exception {
+        if (graph == null) {
+            throw new Exception("Grafo no existe");
+        }
+        String recorrido = "";
+    
+        if (algoritmo == 1) { // Usar algoritmo de Floyd
+            BellmanFord bellmanFord = new BellmanFord(graph, origen, destino);
+            recorrido = bellmanFord.caminoCorto(); 
+        } else { 
+            Floyd floydWarshall = new Floyd(graph, origen, destino);
+            recorrido = floydWarshall.caminoCorto(); 
+        }
+        return recorrido; 
+    
+    }
+
+    public String dFS(int origen) throws Exception {
+        if (graph == null) {
+            throw new Exception("El grafo no existe");
+        }
+    
+        // Crear la instancia de BFS con el grafo y el nodo de origen
+        DFS bfsAlgoritmo = new DFS(graph, origen);
+    
+        // Llamamos al método de recorrerGrafo() de la clase BFS para obtener el recorrido
+        String recorrido = bfsAlgoritmo.recorrerGrafo();
+        return recorrido;
+    }
+    
 
 
     public HospitalDao() {

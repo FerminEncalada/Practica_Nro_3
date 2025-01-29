@@ -1,0 +1,130 @@
+{% extends 'template.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa de Grafos</title>
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+    <style>
+        /* Estilos generales */
+        body {
+            background-color: #f5f5f5; 
+            font-family: 'Roboto', sans-serif;
+            color: #333; 
+        }
+
+        /* Contenedor principal */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        /* Estilo del título */
+        h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            color: #007bff; /* Azul primario */
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* Contenedor del grafo */
+        #mynetwork {
+            width: 100%; /* Ancho completo */
+            height: 600px;
+            background-color: #fff; /* Fondo blanco para el grafo */
+            border: 3px solid #007bff; /* Borde azul */
+            border-radius: 10px; /* Bordes redondeados */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra suave */
+        }
+
+        /* Botón */
+        .btn-refresh {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007bff; /* Azul primario */
+            color: #fff; /* Texto blanco */
+            font-size: 1.2rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Sombra suave */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-refresh:hover {
+            background-color: #0056b3; /* Azul más oscuro al pasar el mouse */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra más fuerte */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Título -->
+        <h2>Visualización del Grafo</h2>
+
+        <!-- Contenedor del grafo -->
+        <div id="mynetwork"></div>
+
+        <!-- Botón de refresco -->
+        <button class="btn-refresh" onclick="refreshGraph()">Refrescar Grafo</button>
+    </div>
+
+    <script>
+        // Datos del grafo
+        const graphData = JSON.parse('{{ graph_data | tojson | safe }}');
+
+        if (graphData && graphData.nodes && graphData.edges) {
+            const nodes = new vis.DataSet(graphData.nodes.map(node => ({
+                id: node.id,
+                label: node.name,
+                size: 80,
+                shape: 'ellipse',
+            })));
+
+            const edges = new vis.DataSet(graphData.edges.map(edge => ({
+                from: edge.from,
+                to: edge.to,
+                label: edge.weight.toString(),
+                font: { size: 14, align: 'top' },
+                width: 2,
+            })));
+
+            const container = document.getElementById('mynetwork');
+            const data = { nodes, edges };
+
+            const options = {
+                nodes: {
+                    shape: "ellipse",
+                    size: 30,
+                },
+                physics: {
+                    enabled: true,
+                    barnesHut: {
+                        gravitationalConstant: -5000,
+                        centralGravity: 0.1,
+                        springLength: 240,
+                        springConstant: 0.024,
+                    }
+                }
+            };
+
+            new vis.Network(container, data, options);
+        } else {
+            console.error("Error: No se encontraron datos de grafo");
+        }
+
+        // Función para refrescar el grafo (puedes personalizarla para recargar datos)
+        function refreshGraph() {
+            location.reload(); // Simplemente recarga la página
+        }
+    </script>
+</body>
+</html>
+{% endblock %}

@@ -4,14 +4,14 @@ public class Hospital {
     private Integer idHospital;
     private String nombre;
     private String direccion;
-    private Integer capacidad; 
-    private double longitud;
-    private double latitud;
+    private String capacidad; 
+    private Double longitud;
+    private Double latitud;
     public Hospital(){
 
     }
     
-    public Hospital(Integer idHospital, String nombre, String direccion, Integer capacidad, double longitud, double latitud) {
+    public Hospital(Integer idHospital, String nombre, String direccion, String capacidad, Double longitud, Double latitud) {
         this.idHospital = idHospital;
         this.nombre = nombre;
         this.direccion = direccion;
@@ -45,11 +45,11 @@ public class Hospital {
 		this.direccion = direccion;
 	}
 
-	public Integer getCapacidad() {
+	public String getCapacidad() {
 		return this.capacidad;
 	}
 
-	public void setCapacidad(Integer capacidad) {
+	public void setCapacidad(String capacidad) {
 		this.capacidad = capacidad;
 	}
 

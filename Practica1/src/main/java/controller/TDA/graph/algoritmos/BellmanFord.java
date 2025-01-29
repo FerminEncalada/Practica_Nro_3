@@ -1,59 +1,63 @@
 package controller.TDA.graph.algoritmos;
 
+import controller.TDA.graph.GraphLabelNoDirect;
+import controller.TDA.graph.GraphDirect;
+import controller.TDA.graph.Adyecencia;
+import controller.TDA.list.LinkedList;
 import java.util.HashMap;
 import java.util.Map;
-import controller.TDA.list.LinkedList;
-import controller.TDA.list.ListEmptyException;
-import controller.TDA.graph.Adyecencia;
-import controller.TDA.graph.GraphLabelNoDirect;
-import controller.TDA.graph.GraphLabelNoDirect;
-import java.util.Arrays;
 
 public class BellmanFord {
     private GraphLabelNoDirect<String> grafo;
     private int origen;
-    private float[] distancias;
-    private int[] predecesores;
-    
+    private int destino;
+    private Map<Integer, Float> distancias;
+    private Map<Integer, Integer> predecesores;
+
     public BellmanFord(GraphLabelNoDirect<String> grafo, int origen, int destino) {
         this.grafo = grafo;
         this.origen = origen;
-        int n = grafo.nro_vertices();
-        this.distancias = new float[n + 1];
-        this.predecesores = new int[n + 1];
+        this.destino = destino;
+        this.distancias = new HashMap<>();
+        this.predecesores = new HashMap<>();
     }
 
-    public String caminoCorto(int destino) throws Exception {
+    public String caminoCorto() throws Exception {
         int n = grafo.nro_vertices();
 
-        Arrays.fill(distancias, Float.MAX_VALUE);
-        distancias[origen] = 0;
-        Arrays.fill(predecesores, -1);
+        // Inicialización de estructuras dinámicas
+        for (int i = 1; i <= n; i++) {
+            distancias.put(i, Float.MAX_VALUE);
+            predecesores.put(i, -1);
+        }
+        distancias.put(origen, 0f);
 
-        for (int i = 1; 1 < n; i ++) {
+        // Relajación de las aristas (n-1 veces)
+        for (int i = 1; i < n; i++) {
             for (int u = 1; u <= n; u++) {
-                LinkedList<Adyecencia> adyecencias = grafo.adyecencias(u);
-                for (int j = 0; j < adyecencias.getSize(); j++) {
-                    Adyecencia adyecencia = adyecencias.get(j);
-                    int v = adyecencia.getdestination();
-                    float peso = adyecencia.getweight();
-                    if (distancias[u] != Float.MAX_VALUE && distancias[u] + peso < distancias[v]) {
-                        distancias[v] = distancias[u] + peso;
-                        predecesores[v] = u;
+                LinkedList<Adyecencia> adyacencias = grafo.adyecencias(u);
+                for (int j = 0; j < adyacencias.getSize(); j++) {
+                    Adyecencia adyacencia = adyacencias.get(j);
+                    int v = adyacencia.getdestination();
+                    float peso = adyacencia.getweight();
+                    
+                    if (distancias.get(u) != Float.MAX_VALUE && distancias.get(u) + peso < distancias.get(v)) {
+                        distancias.put(v, distancias.get(u) + peso);
+                        predecesores.put(v, u);
                     }
                 }
             }
-            
         }
 
-        for (int u = 1; u <= n; u ++) {
-            LinkedList<Adyecencia> adyacencias = grafo .adyecencias(u);
+        // Verificación de ciclos negativos
+        for (int u = 1; u <= n; u++) {
+            LinkedList<Adyecencia> adyacencias = grafo.adyecencias(u);
             for (int j = 0; j < adyacencias.getSize(); j++) {
                 Adyecencia adyacencia = adyacencias.get(j);
                 int v = adyacencia.getdestination();
                 float peso = adyacencia.getweight();
-                if (distancias[u] != Float.MAX_VALUE && distancias[u] + peso < distancias[v]) {
-                    return ("El grafo contiene un ciclo de peso negativo");
+                if (distancias.get(u) != Float.MAX_VALUE && distancias.get(u) + peso < distancias.get(v)) {
+                    return "El grafo tiene un ciclo negativo";
                 }
             }
         }
@@ -61,16 +65,25 @@ public class BellmanFord {
         return reconstruirCamino(origen, destino);
     }
 
-    private String reconstruirCamino(int origen, int destino) {
-        if (distancias[destino] == Float.MAX_VALUE) {
+    private String reconstruirCamino(int origen, int destino) throws Exception {
+        if (distancias.get(destino) == Float.MAX_VALUE) {
             return "No hay camino";
         }
 
         StringBuilder camino = new StringBuilder();
-        for (int v = destino; v != origen; v = predecesores[v]) {
-            camino.insert(0, grafo.getLabelL(v) + " <- ");
+        int actual = destino;
+        float distanciaTotal = 0;
+
+        while (actual != -1) {
+            if (predecesores.get(actual) != -1) {
+                distanciaTotal += grafo.getWigth2(predecesores.get(actual), actual);
+            }
+            camino.insert(0, actual + " -> ");
+            actual = predecesores.get(actual);
         }
-        camino.insert(0, grafo.getLabelL(origen));
-        return camino.toString();
+        camino.delete(camino.length() - 4, camino.length()); // Eliminar la última flecha
+
+        System.out.println("Distancia total recorrida: " + distanciaTotal);
+        return "Camino: " + camino.toString() + "\nDistancia total: " + distanciaTotal;
     }
 }

@@ -1,0 +1,140 @@
+{% extends 'template.html' %}
+
+{% block content %}
+<!-- Contenedor principal con fondo blanco -->
+<div class="container-fluid d-flex justify-content-center align-items-start" style="background: #ffffff; min-height: 100vh; padding-top: 50px;">
+
+    <!-- Card contenedor principal más pequeño -->
+    <div class="card shadow-lg border-0 rounded-5" style="width: 90%; max-width: 700px; background: #e0e5ec;">
+        <!-- Cabecera del formulario -->
+        <div class="card-header text-center py-4" style="background: #ffffff; box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.1), -10px -10px 20px rgba(255, 255, 255, 0.5); border-top-left-radius: 25px; border-top-right-radius: 25px;">
+            <h1 class="fw-bold text-dark" style="font-size: 2rem;">Ejecutar Algoritmos de Grafos</h1>
+        </div>
+
+        <!-- Cuerpo del formulario -->
+        <div class="card-body p-4">
+            <!-- Contenedor con los dos formularios alineados verticalmente -->
+            <div class="d-flex flex-column gap-4">
+
+                <!-- Formulario de Ejecutar DFS -->
+                <div id="bfsSection" class="p-4" style="background: #ffffff; border-radius: 15px; box-shadow: inset 10px 10px 15px rgba(0, 0, 0, 0.1), inset -10px -10px 15px rgba(255, 255, 255, 0.7);">
+                    <h3 class="text-center text-primary mb-3" style="font-size: 1.5rem;">Ejecutar DFS</h3>
+                    <form id="bfsForm">
+                        <div class="mb-3">
+                            <label for="origen" class="form-label text-muted" style="font-weight: 500;">Origen:</label>
+                            <select id="origen" name="origen" class="form-select shadow-sm p-3 rounded-3" style="background: #f8f8f8; border: none;">
+                                {% for list in data %}
+                                    <option value="{{ list.labelId }}">{{ list.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-2 rounded-3" style="font-size: 1.1rem; background: #2575fc; border: none;">
+                            Ejecutar DFS
+                        </button>
+                    </form>
+                    <!-- Resultado de DFS debajo del formulario -->
+                    <div id="resultDFS" class="text-center d-none mt-3">
+                        <div class="alert alert-danger p-2" style="font-size: 1rem; background-color: #ffd6d6; border-color: #ffcccc;">
+                            <h4 class="mb-0 text-danger">Resultado DFS:</h4>
+                            <p id="resultadoTextDFS" class="ms-3 text-dark"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario de Calcular Camino Corto -->
+                <div id="caminoCortoSection" class="p-4" style="background: #ffffff; border-radius: 15px; box-shadow: inset 10px 10px 15px rgba(0, 0, 0, 0.1), inset -10px -10px 15px rgba(255, 255, 255, 0.7);">
+                    <h3 class="text-center text-primary mb-3" style="font-size: 1.5rem;">Calcular Camino Corto</h3>
+                    <form id="caminoCortoForm">
+                        <div class="mb-3">
+                            <label for="origen" class="form-label text-muted" style="font-weight: 500;">Origen:</label>
+                            <select id="origen" name="origen" class="form-select shadow-sm p-3 rounded-3" style="background: #f8f8f8; border: none;">
+                                {% for list in data %}
+                                    <option value="{{ list.labelId }}">{{ list.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="destino" class="form-label text-muted" style="font-weight: 500;">Destino:</label>
+                            <select id="destino" name="destino" class="form-select shadow-sm p-3 rounded-3" style="background: #f8f8f8; border: none;">
+                                {% for list in data %}
+                                    <option value="{{ list.labelId }}">{{ list.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="algoritmo" class="form-label text-muted" style="font-weight: 500;">Algoritmo:</label>
+                            <select id="algoritmo" name="algoritmo" class="form-select shadow-sm p-3 rounded-3" style="background: #f8f8f8; border: none;">
+                                <option value="1">Bellman-Ford</option>
+                                <option value="2">Floyd-Warshall</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-2 rounded-3" style="font-size: 1.1rem; background: #2575fc; border: none;">
+                            Calcular Camino Corto
+                        </button>
+                    </form>
+                    <!-- Resultado de Camino Corto debajo del formulario -->
+                    <div id="resultCaminoCorto" class="text-center d-none mt-3">
+                        <div class="alert alert-danger p-2" style="font-size: 1rem; background-color: #ffd6d6; border-color: #ffcccc;">
+                            <h4 class="mb-0 text-danger">Resultado Camino Corto:</h4>
+                            <p id="resultadoTextCaminoCorto" class="ms-3 text-dark"></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // BFS Form Submission
+    document.getElementById("bfsForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        const origen = document.getElementById("origen").value;
+
+        fetch(`/dfs/${origen}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data) {
+                    document.getElementById("resultadoTextDFS").textContent = data.respuesta;
+                    document.getElementById("resultDFS").classList.remove("d-none");
+                } else {
+                    document.getElementById("resultadoTextDFS").textContent = "Error: No se pudo ejecutar DFS.";
+                    document.getElementById("resultDFS").classList.remove("d-none");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById("resultadoTextDFS").textContent = "Error de conexión.";
+                document.getElementById("resultDFS").classList.remove("d-none");
+            });
+    });
+
+    // Camino Corto Form Submission
+    document.getElementById("caminoCortoForm").addEventListener("submit", function(event) {
+        event.preventDefault();
+        const origen = document.getElementById("origen").value;
+        const destino = document.getElementById("destino").value;
+        const algoritmo = document.getElementById("algoritmo").value;
+
+        fetch(`/caminocorto/${origen}/${destino}/${algoritmo}`)
+            .then(response => response.json())
+            .then(data => {
+                if (data.msg === "Camino corto calculado exitosamente") {
+                    document.getElementById("resultadoTextCaminoCorto").textContent = data.resultado;
+                    document.getElementById("resultCaminoCorto").classList.remove("d-none");
+                } else {
+                    document.getElementById("resultadoTextCaminoCorto").textContent = "Error: " + data.msg;
+                    document.getElementById("resultCaminoCorto").classList.remove("d-none");
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById("resultadoTextCaminoCorto").textContent = "Error de conexión.";
+                document.getElementById("resultCaminoCorto").classList.remove("d-none");
+            });
+    });
+</script>
+
+{% endblock %}

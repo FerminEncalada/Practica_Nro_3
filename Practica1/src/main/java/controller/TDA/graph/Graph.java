@@ -76,6 +76,7 @@ public abstract class Graph {
                     JsonObject destinationObject = new JsonObject();
                     destinationObject.addProperty("from", this.getVertex(i));
                     destinationObject.addProperty("to", adj.getdestination());
+                    destinationObject.addProperty("weight", adj.getweight());
                     destinationsArray.add(destinationObject);
                 }
             }
@@ -189,7 +190,7 @@ public abstract class Graph {
         int connectionsCount = existingEdges.getSize();
 
         // Asegurar al menos 3 conexiones por vértice
-        while (connectionsCount < 3) {
+        while (connectionsCount < 2) {
             //Generar un vértice aleatorio diferente al actual
             int randomVertex = random.nextInt(this.nro_vertices()) + 1;
             while (randomVertex == i || is_edges(i, randomVertex)) {
@@ -222,14 +223,7 @@ public abstract class Graph {
         return file.exists();
     }
 
-    // Método para calcular la distancia entre dos hospitales
     public static double calcularDistancia(Hospital hospital1, Hospital hospital2) {
-        // Verificar que las coordenadas no sean nulas
-        if (hospital1.getLatitud() == null || hospital1.getLongitud() == null || 
-            hospital2.getLatitud() == null || hospital2.getLongitud() == null) {
-            return Double.NaN;  // Retorna NaN si alguna coordenada es nula
-        }
-        // Convertir las coordenadas de grados a radianes
         double lat1 = toRadians(hospital1.getLatitud());
         double lon1 = toRadians(hospital1.getLongitud());
         double lat2 = toRadians(hospital2.getLatitud());
@@ -241,12 +235,10 @@ public abstract class Graph {
         double a = Math.pow(Math.sin(dlat / 2), 2) + Math.cos(lat1) * Math.cos(lat2) * Math.pow(Math.sin(dlon / 2), 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     
-        // Radio de la Tierra en metros
-        final double R = 6371000.0; // Radio de la Tierra en metros
+        final double R = 6371000.0; 
         double distancia = R * c;
     
-        // Redondear la distancia a 2 decimales y devolver
-        return Math.round(distancia * 100.0) / 100.0;
+        return Math.round((distancia / 100.0) * 100.0) / 100.0;  // Redondear a 2 decimales
     }
     
 
@@ -257,8 +249,11 @@ public abstract class Graph {
         // Iterar sobre todos los vértices del grafo
         for (int i = 1; i <= this.nro_vertices(); i++) {
             JsonObject vertexInfo = new JsonObject();
+            Hospital model = vertexModels.get(i);
+            if (model != null) {
+                vertexInfo.addProperty("name", model.getNombre()); // Nombre del vértice
+            }
             vertexInfo.addProperty("labelId", this.getVertex(i)); // ID del vértice actual
-
             JsonArray destinations = new JsonArray(); // Lista de conexiones para el vértice
             LinkedList<Adyecencia> adyacencias = this.adyecencias(i);
 
@@ -289,5 +284,45 @@ public abstract class Graph {
         } catch (Exception e) {
             e.printStackTrace();  // En caso de error, imprime la traza del error
         }
+    }
+
+
+    public JsonObject getVisGraphData() throws Exception {
+        JsonObject visGraph = new JsonObject();
+    
+        // Arrays para los nodos y las aristas
+        JsonArray nodes = new JsonArray();
+        JsonArray edges = new JsonArray();
+        
+    
+        // Iteramos sobre los vértices
+        for (int i = 1; i <= this.nro_vertices(); i++) {
+            JsonObject node = new JsonObject();
+            Hospital model = vertexModels.get(i);
+            if (model != null) {
+                node.addProperty("name", model.getNombre());  // Nombre del vértice
+            }
+            node.addProperty("id", i);  // ID del nodo
+            node.addProperty("label", "V" + i);  // Etiqueta del nodo (puedes personalizarlo)
+            
+            nodes.add(node);
+    
+            LinkedList<Adyecencia> adyacencias = this.adyecencias(i);
+            if (!adyacencias.isEmpty()) {
+                for (int j = 0; j < adyacencias.getSize(); j++) {
+                    Adyecencia adj = adyacencias.get(j);
+                    JsonObject edge = new JsonObject();
+                    edge.addProperty("from", i);  // Nodo origen
+                    edge.addProperty("to", adj.getdestination());  // Nodo destino
+                    edge.addProperty("weight", adj.getweight());
+                    edges.add(edge);
+                }
+            }
+        }
+    
+        visGraph.add("nodes", nodes);
+        visGraph.add("edges", edges);
+        
+        return visGraph;
     }
 }

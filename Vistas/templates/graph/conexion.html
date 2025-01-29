@@ -1,0 +1,71 @@
+{% extends 'template.html' %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Sección del título y descripción -->
+    <div class="text-center mb-5">
+        <h1 class="display-4 text-primary fw-bold">Adyacencias Aleatorias</h1>
+        <p class="text-muted fs-5">
+            Visualiza las conexiones de un grafo mediante una matriz interactiva. Genera nuevas adyacencias con un clic.
+        </p>
+        <button id="nuevaAdyacencia" class="btn btn-lg btn-outline-primary mt-4 shadow-sm">
+            <i class="bi bi-plus-circle"></i> Generar Nueva Adyacencia
+        </button>
+    </div>
+
+    <!-- Contenedor de la tabla -->
+    <div class="bg-white shadow rounded p-4">
+        <h2 class="text-center text-primary mb-4">Matriz de Adyacencia</h2>
+        <div class="table-responsive">
+            <table id="tabla" class="table table-bordered table-hover align-middle text-center">
+                <thead class="table-primary">
+                    <tr>
+                        <th class="text-center bg-primary text-white fw-bold align-middle">Nodo</th>
+                        {% for item in lista %}
+                            <th class="text-center fw-bold align-middle">{{ item.name }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in lista %}
+                        <tr>
+                            <!-- Fila del nodo -->
+                            <td class="fw-bold bg-light text-dark">{{ item.name }}</td>
+                            {% for otro_item in lista %}
+                                <td>
+                                    {% set found = false %}
+                                    {% for destino in item.destinations %}
+                                        {% if destino.to == otro_item.labelId %}
+                                            <span class="badge bg-success fs-6 shadow-sm">{{ destino.weight }}</span>
+                                            {% set found = true %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if not found %}
+                                        <span class="text-muted">---</span>
+                                    {% endif %}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById("nuevaAdyacencia").addEventListener("click", function() {
+        fetch('/nuevaadyacencia', {
+            method: 'GET'
+        })
+        .then(response => response.json())
+        .then(data => {
+            location.reload();
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+</script>
+
+{% endblock %}
