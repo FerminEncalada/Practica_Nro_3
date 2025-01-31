@@ -43,7 +43,7 @@
     "idHospital": 6,
     "nombre": "Hospital de los Valles",
     "direccion": "Av. Interoceánica, Cumbayá",
-    "capacidad": "300" ,
+    "capacidad": "300",
     "longitud": -78.421501,
     "latitud": -0.195925
   },
@@ -78,21 +78,5 @@
     "capacidad": "750",
     "longitud": -79.984731,
     "latitud": -3.264024
-  },
-  {
-    "idHospital": 11,
-    "nombre": "Hospital General Monte Sinaí",
-    "direccion": "Vía Perimetral, Guayaquil",
-    "capacidad": "900",
-    "longitud": -79.920123,
-    "latitud": -2.114546
-  },
-  {
-    "idHospital": 12,
-    "nombre": "Hospital Carlos Andrade Marín",
-    "direccion": "Av. 10 de Agosto y Av. Colón, Quito",
-    "capacidad": "1300",
-    "longitud": -78.500672,
-    "latitud": -0.206792
   }
 ]
